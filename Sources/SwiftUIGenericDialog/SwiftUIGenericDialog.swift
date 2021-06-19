@@ -4,13 +4,16 @@ import Combine
 public struct GenericDialog<DialogContent: View>: ViewModifier {
     @Binding var isShowing: Bool
     let cancelOnTapOutside: Bool
+    let cancelAction: (() -> Void)?
     let dialogContent: DialogContent
     
     public init(isShowing: Binding<Bool>,
-         cancelOnTapOutside: Bool,
-         @ViewBuilder dialogContent: () -> DialogContent) {
+                cancelOnTapOutside: Bool,
+                cancelAction: (() -> Void)?,
+                @ViewBuilder dialogContent: () -> DialogContent) {
         _isShowing = isShowing
         self.cancelOnTapOutside = cancelOnTapOutside
+        self.cancelAction = cancelAction
         self.dialogContent = dialogContent()
     }
     
@@ -22,6 +25,7 @@ public struct GenericDialog<DialogContent: View>: ViewModifier {
                     .foregroundColor(Color.black.opacity(0.6))
                     .onTapGesture {
                         if cancelOnTapOutside {
+                            cancelAction?()
                             isShowing = false
                         }
                     }
@@ -38,9 +42,11 @@ public struct GenericDialog<DialogContent: View>: ViewModifier {
 public extension View {
     func genericDialog<DialogContent: View>(isShowing: Binding<Bool>,
                                             cancelOnTapOutside: Bool = true,
+                                            cancelAction: (() -> Void)? = nil,
                                             @ViewBuilder dialogContent: @escaping () -> DialogContent) -> some View {
         self.modifier(GenericDialog(isShowing: isShowing,
                                     cancelOnTapOutside: cancelOnTapOutside,
+                                    cancelAction: cancelAction,
                                     dialogContent: dialogContent))
     }
     

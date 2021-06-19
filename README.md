@@ -14,6 +14,13 @@ The package also contains a **progress dialog / HUD in SwiftUI**:
 
 Check out [this recipe](https://swiftuirecipes.com/blog/custom-view-dialog-in-swiftui) for in-depth description of the component and its code, as well as [this one for the progress dialog](https://swiftuirecipes.com/blog/progress-dialog-hud-in-swiftui). Check out [SwiftUIRecipes.com](https://swiftuirecipes.com) for more **SwiftUI recipes**!
 
+The dialog is configurable with the following parameters:
+
+1. `isShowing` - binding that determines if the dialog is showing or not.
+1. `cancelOnTapOutside` - if the dialog should be cancelled and hidden if the user taps outside of it.
+1. `cancelAction` - optional action that's performed when the dialog is cancelled by tapping outside. Custom implementations can make use of this to, say, reset their chosen value to the original.
+1. `dialogContent` - the view shown in the dialog.
+
 ### Sample usage
 
 ```swift
